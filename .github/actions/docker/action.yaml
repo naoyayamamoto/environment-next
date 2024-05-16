@@ -1,6 +1,9 @@
 name: 'Docker Build and Push'
 description: 'Builds and pushes Docker images to a container registry'
 inputs:
+  token:
+    description: 'GITHUB_TOKEN or a repo scoped PAT.'
+    default: ${{ github.token }}
   registry:
     description: 'Docker registry to push images to'
     required: true
@@ -10,6 +13,12 @@ inputs:
   prefix:
     description: 'Prefix for tags'
     required: true
+  value1:
+    description: 'Value 1 to inject into the build'
+    default: 'default-value1'
+  value2:
+    description: 'Value 2 to inject into the build'
+    default: 'default-value2'
 runs:
   using: 'composite'
   steps:
@@ -36,7 +45,7 @@ runs:
       with:
         registry: ${{ inputs.registry }}
         username: ${{ github.actor }}
-        password: ${{ secrets.GITHUB_TOKEN }}
+        password: ${{ inputs.token }}
     # Extract metadata (tags, labels) for Docker
     # https://github.com/docker/metadata-action
     - name: Extract Docker metadata
@@ -60,5 +69,5 @@ runs:
         tags: ${{ steps.meta.outputs.tags }}
         no-cache: true
         build-args: |
-          "NEXT_PUBLIC_INJECTION_VALUE=${{ vars.NEXT_PUBLIC_INJECTION_VALUE }}"
-          "NEXT_PUBLIC_INJECTION_VALUE2=${{ vars.NEXT_PUBLIC_INJECTION_VALUE2 }}"
+          "NEXT_PUBLIC_INJECTION_VALUE=${{ inputs.value1 }}"
+          "NEXT_PUBLIC_INJECTION_VALUE2=${{ inputs.value2 }}"

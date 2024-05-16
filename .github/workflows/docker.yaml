@@ -60,6 +60,8 @@ jobs:
           registry: ${{ env.REGISTRY }}
           image-name: ${{ env.IMAGE_NAME }}
           prefix: sample
+          value1: ${{ vars.NEXT_PUBLIC_INJECTION_VALUE }}
+          value2: ${{ vars.NEXT_PUBLIC_INJECTION_VALUE2 }}
   test:
     runs-on: ubuntu-latest
     needs: build-test
@@ -76,3 +78,5 @@ jobs:
           registry: ${{ env.REGISTRY }}
           image-name: ${{ env.IMAGE_NAME }}
           prefix: test
+          value1: ${{ vars.NEXT_PUBLIC_INJECTION_VALUE }}
+          value2: ${{ vars.NEXT_PUBLIC_INJECTION_VALUE2 }}
