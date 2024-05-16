@@ -93,6 +93,9 @@ jobs:
         uses: docker/metadata-action@8e5442c4ef9f78752691e2d8f8d19755c6f78e81 # v5.5.1
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+          flavor: |
+            latest=false
+            prefix=sample-
           tags: |
             type=ref,event=branch,enable=true,priority=600,prefix=sample-
             type=ref,event=tag,enable=true,priority=600,prefix=sample-
@@ -114,15 +117,15 @@ jobs:
       # repository is public to avoid leaking data.  If you would like to publish
       # transparency data even for private images, pass --force to cosign below.
       # https://github.com/sigstore/cosign
-      - name: Sign the published Docker image
-        if: ${{ github.event_name != 'pull_request' }}
-        env:
-          # https://docs.github.com/en/actions/security-guides/security-hardening-for-github-actions#using-an-intermediate-environment-variable
-          TAGS: ${{ steps.meta.outputs.tags }}
-          DIGEST: ${{ steps.build-and-push.outputs.digest }}
-        # This step uses the identity token to provision an ephemeral certificate
-        # against the sigstore community Fulcio instance.
-        run: echo "${TAGS}" | xargs -I {} cosign sign --yes {}@${DIGEST}
+      # - name: Sign the published Docker image
+      #   if: ${{ github.event_name != 'pull_request' }}
+      #   env:
+      #     # https://docs.github.com/en/actions/security-guides/security-hardening-for-github-actions#using-an-intermediate-environment-variable
+      #     TAGS: ${{ steps.meta.outputs.tags }}
+      #     DIGEST: ${{ steps.build-and-push.outputs.digest }}
+      #   # This step uses the identity token to provision an ephemeral certificate
+      #   # against the sigstore community Fulcio instance.
+      #   run: echo "${TAGS}" | xargs -I {} cosign sign --yes {}@${DIGEST}
 
   build2:
     runs-on: ubuntu-latest
@@ -173,6 +176,9 @@ jobs:
         uses: docker/metadata-action@8e5442c4ef9f78752691e2d8f8d19755c6f78e81 # v5.5.1
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+          flavor: |
+            latest=false
+            prefix=test-
           tags: |
             type=ref,event=branch,enable=true,priority=600,prefix=test-
             type=ref,event=tag,enable=true,priority=600,prefix=test-
