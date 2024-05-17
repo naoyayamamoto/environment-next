@@ -71,3 +71,6 @@ runs:
         build-args: |
           "NEXT_PUBLIC_INJECTION_VALUE=${{ inputs.value1 }}"
           "NEXT_PUBLIC_INJECTION_VALUE2=${{ inputs.value2 }}"
+        platforms: |
+          linux/amd64
+          linux/arm64
