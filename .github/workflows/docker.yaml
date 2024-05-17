@@ -52,6 +52,8 @@ jobs:
       contents: read
       packages: write
     steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
       - name: Docker build and push
         uses: ./.github/actions/docker
         with:
@@ -68,6 +70,8 @@ jobs:
       contents: read
       packages: write
     steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
       - name: Docker build and push
         uses: ./.github/actions/docker
         with:
