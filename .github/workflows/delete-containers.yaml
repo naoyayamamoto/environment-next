@@ -1,0 +1,24 @@
+name: Delete all containers from package without tags (Scheduled Job)
+
+on:
+  schedule:
+    # run at 9am on the first day of the month
+    - cron: '0 9 1 * *'
+  workflow_dispatch:
+
+jobs:
+  delete:
+    permissions:
+      contents: read
+      packages: write
+    runs-on: ubuntu-latest
+    steps:
+      - name: Delete all containers from package without tags
+        uses: Chizkiyahu/delete-untagged-ghcr-action@v3
+        with:
+          token: ${{ github.token }}
+          repository_owner: ${{ github.repository_owner }}
+          repository: ${{ github.repository }}
+          package_name: environment-next
+          untagged_only: true
+          owner_type: user # or user
